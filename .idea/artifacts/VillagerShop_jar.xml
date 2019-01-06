@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="VillagerShop:jar">
+    <output-path>$USER_HOME$/Desktop/MC/Eclipse/SpigotAnother/plugins</output-path>
+    <root id="archive" name="VillagerShop.jar">
+      <element id="module-output" name="VillagerShop" />
+    </root>
+  </artifact>
+</component>

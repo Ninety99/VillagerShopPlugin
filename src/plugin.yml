@@ -1,0 +1,15 @@
+name: VillagerShop
+main: me.NinetyNine.villagershop.VillagerShop
+version: 1.0
+depend: [Vault]
+description: An ability merchant plugin
+commands:
+  ability:
+    usage: /<command>
+
+  aability:
+    usage: /<command>
+    permission: ability.admin
+permissions:
+  ability.admin:
+    default: op
