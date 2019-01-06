@@ -17,8 +17,14 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class Ability implements Listener {
 
     @Getter
-    private static final List<Ability> abilities = Arrays.asList(new DoubleOreAbility(), new TankAbility(),
-            new AttackerAbility(), new LegacyAbility(), new AdditionalMultiplierAbility());
+    private static VillagerShop plugin;
+    @Getter
+    private static final List<Ability> abilities = Arrays.asList(new DoubleOreAbility(plugin), new TankAbility(plugin),
+            new AttackerAbility(plugin), new LegacyAbility(plugin), new AdditionalMultiplierAbility(plugin));
+
+    public Ability(VillagerShop plugin) {
+        this.plugin = plugin;
+    }
 
     public static void initialize() {
         for (Ability a : getAbilities()) {

@@ -1,11 +1,8 @@
 package me.NinetyNine.villagershop.commands;
 
-import me.NinetyNine.villagershop.Util;
-import me.NinetyNine.villagershop.VillagerManager;
 import me.NinetyNine.villagershop.VillagerShop;
 import me.NinetyNine.villagershop.ability.Ability;
 import me.NinetyNine.villagershop.ability.AbilityManager;
-import me.NinetyNine.villagershop.Config;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,6 +12,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class AbilityAdminCommand implements CommandExecutor {
+
+    private VillagerShop plugin;
+
+    public AbilityAdminCommand(VillagerShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
@@ -33,7 +36,7 @@ public class AbilityAdminCommand implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("spawn")) {
                     if (sender instanceof Player) {
                         Player player = (Player) sender;
-                        VillagerManager.getInstance().spawnVillager(player.getLocation());
+                        plugin.getManager().spawnVillager(player.getLocation());
                         player.sendMessage(ChatColor.GREEN + "Successfully spawned merchant!");
                         return true;
                     } else {
@@ -45,7 +48,7 @@ public class AbilityAdminCommand implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("despawn")) {
                     if (sender instanceof Player) {
                         Player player = (Player) sender;
-                        VillagerManager.getInstance().despawn(Util.getInstance().getTarget(player));
+                        plugin.getManager().despawn(plugin.getUtil().getTarget(player));
                         player.sendMessage(ChatColor.GREEN + "Successfully despawned merchant!");
                         return true;
                     } else {
@@ -66,7 +69,7 @@ public class AbilityAdminCommand implements CommandExecutor {
                     if (cost == 0)
                         return true;
 
-                    Config.getInstance().getConfig().set(ability.getAbilityName() + ".price", cost);
+                    plugin.getPConfig().getConfig().set(ability.getAbilityName() + ".price", cost);
                     VillagerShop.getInstance().saveConfig();
                     sender.sendMessage(ChatColor.GREEN + "Successfully set the price of " +
                             ability.getAbilityName() + " to " + cost);

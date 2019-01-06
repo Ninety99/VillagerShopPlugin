@@ -1,17 +1,19 @@
 package me.NinetyNine.villagershop;
 
-import lombok.Getter;
 import me.NinetyNine.villagershop.ability.Ability;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
 
-    @Getter
-    private static final Config instance = new Config();
+    private VillagerShop plugin;
+
+    public Config(VillagerShop plugin) {
+        this.plugin = plugin;
+    }
 
     public FileConfiguration getConfig() {
-        return VillagerShop.getInstance().getConfig();
+        return plugin.getConfig();
     }
 
     public void init() {

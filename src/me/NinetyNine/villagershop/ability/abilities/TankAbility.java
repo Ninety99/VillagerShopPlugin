@@ -1,8 +1,8 @@
 package me.NinetyNine.villagershop.ability.abilities;
 
+import me.NinetyNine.villagershop.VillagerShop;
 import me.NinetyNine.villagershop.ability.Ability;
 import me.NinetyNine.villagershop.ability.AbilityManager;
-import me.NinetyNine.villagershop.Config;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,6 +13,11 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class TankAbility extends Ability {
+
+    public TankAbility(VillagerShop plugin) {
+        super(plugin);
+    }
+
     @Override
     public ItemStack getIcon() {
         return new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
@@ -30,7 +35,7 @@ public class TankAbility extends Ability {
 
     @Override
     public int getCost() {
-        return Config.getInstance().getConfig().getInt(getAbilityName() + ".price");
+        return this.getPlugin().getPConfig().getConfig().getInt(getAbilityName() + ".price");
     }
 
     @EventHandler

@@ -1,6 +1,5 @@
 package me.NinetyNine.villagershop;
 
-import lombok.Getter;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -16,22 +15,19 @@ import java.util.List;
 
 public class Util {
 
-    @Getter
-    private static final Util instance = new Util();
-
     public void freezeEntity(Entity en) {
-        net.minecraft.server.v1_8_R3.Entity nmsEn = ((CraftEntity)en).getHandle();
+        net.minecraft.server.v1_8_R3.Entity nmsEn = ((CraftEntity) en).getHandle();
         NBTTagCompound compound = new NBTTagCompound();
         nmsEn.c(compound);
-        compound.setByte("NoAI", (byte)1);
+        compound.setByte("NoAI", (byte) 1);
         nmsEn.f(compound);
     }
 
     public void unfreezeEntity(Entity entity) {
-        net.minecraft.server.v1_8_R3.Entity nmsEn = ((CraftEntity)entity).getHandle();
+        net.minecraft.server.v1_8_R3.Entity nmsEn = ((CraftEntity) entity).getHandle();
         NBTTagCompound compound = new NBTTagCompound();
         nmsEn.c(compound);
-        compound.setByte("NoAI", (byte)0);
+        compound.setByte("NoAI", (byte) 0);
         nmsEn.f(compound);
     }
 

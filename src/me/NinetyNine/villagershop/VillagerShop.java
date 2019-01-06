@@ -30,6 +30,15 @@ public class VillagerShop extends JavaPlugin {
     @Getter
     private Economy economy;
 
+    @Getter
+    private VillagerManager manager;
+
+    @Getter
+    private Config pConfig;
+
+    @Getter
+    private Util util;
+
     @Override
     public void onEnable() {
         this.setupEconomy();
@@ -39,13 +48,16 @@ public class VillagerShop extends JavaPlugin {
 
         instance = this;
 
+        this.manager = new VillagerManager(this);
+        this.pConfig = new Config(this);
+        this.util = new Util();
         this.registerListeners();
         this.registerCommands();
         this.setupShop();
         this.setupConfirmation();
 
         Ability.initialize();
-        Config.getInstance().init();
+        pConfig.init();
         this.getLogger().info("Successfully enabled VillagerShop v"
                 + this.getDescription().getVersion());
     }
@@ -59,13 +71,13 @@ public class VillagerShop extends JavaPlugin {
     private void registerListeners() {
         PluginManager pm = Bukkit.getServer().getPluginManager();
 
-        pm.registerEvents(new VillagerListener(), this);
+        pm.registerEvents(new VillagerListener(this), this);
         pm.registerEvents(new PlayerListener(), this);
         pm.registerEvents(new InventoryListener(this), this);
     }
 
     private void registerCommands() {
-        getCommand("aability").setExecutor(new AbilityAdminCommand());
+        getCommand("aability").setExecutor(new AbilityAdminCommand(this));
         getCommand("ability").setExecutor(new AbilityCommand());
     }
 

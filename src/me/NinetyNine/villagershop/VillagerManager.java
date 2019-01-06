@@ -13,10 +13,12 @@ import java.util.List;
 public class VillagerManager {
 
     @Getter
-    private static final VillagerManager instance = new VillagerManager();
-
-    @Getter
     private final List<Villager> villagers = new ArrayList<>();
+    private VillagerShop plugin;
+
+    public VillagerManager(VillagerShop plugin) {
+        this.plugin = plugin;
+    }
 
     public void spawnVillager(Location location) {
         Villager villager = (Villager) location.getWorld().spawnEntity(location, EntityType.VILLAGER);
@@ -27,7 +29,7 @@ public class VillagerManager {
         if (!getVillagers().contains(villager))
             getVillagers().add(villager);
 
-        Util.getInstance().freezeEntity(villager);
+        plugin.getUtil().freezeEntity(villager);
     }
 
     public void despawn(LivingEntity entity) {
@@ -38,7 +40,7 @@ public class VillagerManager {
         if (!getVillagers().contains(villager)) return;
 
         getVillagers().remove(villager);
-        Util.getInstance().unfreezeEntity(villager);
+        plugin.getUtil().unfreezeEntity(villager);
         entity.remove();
     }
 }

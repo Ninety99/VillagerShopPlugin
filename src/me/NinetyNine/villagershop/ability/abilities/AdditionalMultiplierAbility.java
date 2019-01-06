@@ -1,11 +1,15 @@
 package me.NinetyNine.villagershop.ability.abilities;
 
+import me.NinetyNine.villagershop.VillagerShop;
 import me.NinetyNine.villagershop.ability.Ability;
-import me.NinetyNine.villagershop.Config;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class AdditionalMultiplierAbility extends Ability {
+
+    public AdditionalMultiplierAbility(VillagerShop plugin) {
+        super(plugin);
+    }
 
     @Override
     public ItemStack getIcon() {
@@ -24,7 +28,7 @@ public class AdditionalMultiplierAbility extends Ability {
 
     @Override
     public int getCost() {
-        return Config.getInstance().getConfig().getInt(getAbilityName() + ".price");
+        return this.getPlugin().getPConfig().getConfig().getInt(getAbilityName() + ".price");
     }
 
     /*
