@@ -2,7 +2,6 @@ package me.NinetyNine.villagershop;
 
 import lombok.Getter;
 import me.NinetyNine.villagershop.ability.Ability;
-import me.NinetyNine.villagershop.ability.AbilityManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -20,9 +19,12 @@ public class PPlayer {
     @Getter
     private Inventory abilityInventory;
 
-    public PPlayer(Player player) {
+    private VillagerShop plugin;
+
+    public PPlayer(Player player, VillagerShop plugin) {
         this.player = player;
         this.abilityInventory = Bukkit.createInventory(null, 27, player.getName() + "'s Abilities");
+        this.plugin = plugin;
 
         if (!playerToPP.containsKey(player))
             playerToPP.put(player, this);
@@ -33,7 +35,7 @@ public class PPlayer {
     }
 
     public List<Ability> getAbilities() {
-        return AbilityManager.getInstance().hasAbilities(player) ? AbilityManager.getInstance().getAbilities(player) : null;
+        return this.plugin.getAManager().hasAbilities(player) ? this.plugin.getAManager().getAbilities(this.player) : null;
     }
 
     public void loadInventory() {

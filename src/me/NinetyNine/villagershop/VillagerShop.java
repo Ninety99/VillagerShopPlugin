@@ -2,6 +2,7 @@ package me.NinetyNine.villagershop;
 
 import lombok.Getter;
 import me.NinetyNine.villagershop.ability.Ability;
+import me.NinetyNine.villagershop.ability.AbilityManager;
 import me.NinetyNine.villagershop.commands.AbilityAdminCommand;
 import me.NinetyNine.villagershop.commands.AbilityCommand;
 import me.NinetyNine.villagershop.listeners.InventoryListener;
@@ -23,6 +24,7 @@ public class VillagerShop extends JavaPlugin {
 
     @Getter
     private static VillagerShop instance;
+
     @Getter
     private final Inventory shop = Bukkit.createInventory(null, 27, ChatColor.GOLD + "Ability Shop");
     @Getter
@@ -32,6 +34,9 @@ public class VillagerShop extends JavaPlugin {
 
     @Getter
     private VillagerManager manager;
+
+    @Getter
+    private AbilityManager aManager;
 
     @Getter
     private Config pConfig;
@@ -49,15 +54,16 @@ public class VillagerShop extends JavaPlugin {
         instance = this;
 
         this.manager = new VillagerManager(this);
+        this.aManager = new AbilityManager();
         this.pConfig = new Config(this);
+        this.pConfig.init();
         this.util = new Util();
         this.registerListeners();
         this.registerCommands();
         this.setupShop();
         this.setupConfirmation();
 
-        Ability.initialize();
-        pConfig.init();
+        Ability.initialize(this);
         this.getLogger().info("Successfully enabled VillagerShop v"
                 + this.getDescription().getVersion());
     }
@@ -72,7 +78,7 @@ public class VillagerShop extends JavaPlugin {
         PluginManager pm = Bukkit.getServer().getPluginManager();
 
         pm.registerEvents(new VillagerListener(this), this);
-        pm.registerEvents(new PlayerListener(), this);
+        pm.registerEvents(new PlayerListener(this), this);
         pm.registerEvents(new InventoryListener(this), this);
     }
 
@@ -82,10 +88,10 @@ public class VillagerShop extends JavaPlugin {
     }
 
     private void setupShop() {
-        for (Ability a : Ability.getAbilities()) {
-            if (shop.contains(a.getItemShop().getType())) continue;
+        for (Ability a : this.getAManager().getAbilities()) {
+            if (this.shop.contains(a.getItemShop().getType())) continue;
 
-            shop.addItem(a.getItemShop());
+            this.shop.addItem(a.getItemShop());
         }
     }
 

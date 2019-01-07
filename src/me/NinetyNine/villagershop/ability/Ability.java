@@ -1,8 +1,6 @@
 package me.NinetyNine.villagershop.ability;
 
-import lombok.Getter;
 import me.NinetyNine.villagershop.VillagerShop;
-import me.NinetyNine.villagershop.ability.abilities.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
@@ -10,33 +8,28 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Ability implements Listener {
 
-    @Getter
-    private static VillagerShop plugin;
-    @Getter
-    private static final List<Ability> abilities = Arrays.asList(new DoubleOreAbility(plugin), new TankAbility(plugin),
-            new AttackerAbility(plugin), new LegacyAbility(plugin), new AdditionalMultiplierAbility(plugin));
+    public static VillagerShop plugin;
 
-    public Ability(VillagerShop plugin) {
-        this.plugin = plugin;
-    }
+    public static void initialize(VillagerShop plugin2) {
+        plugin = plugin2;
 
-    public static void initialize() {
-        for (Ability a : getAbilities()) {
-            Bukkit.getServer().getPluginManager().registerEvents(a, VillagerShop.getInstance());
+        for (Ability a : plugin.getAManager().getAbilities()) {
+            Bukkit.getServer().getPluginManager().registerEvents(a, plugin);
+            plugin.getPConfig().getConfig().set(a.getAbilityName() + ".price", a.getCost());
             System.out.println("Loaded " + a.getAbilityName() + "!");
         }
 
-        System.out.println("Loaded " + getAbilities().size() + " abilities!");
+        plugin.saveConfig();
+        System.out.println("Loaded " + plugin.getAManager().getAbilities().size() + " abilities!");
     }
 
     public static Ability get(String name) {
-        for (Ability a : getAbilities()) {
+        for (Ability a : plugin.getAManager().getAbilities()) {
             if (a.getAbilityName().equalsIgnoreCase(name.toLowerCase()))
                 return a;
         }
@@ -45,8 +38,7 @@ public abstract class Ability implements Listener {
     }
 
     protected double getChance() {
-        double random = ThreadLocalRandom.current().nextDouble(1);
-        return random;
+        return ThreadLocalRandom.current().nextDouble(1);
     }
 
     public ItemStack getItem() {

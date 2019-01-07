@@ -2,7 +2,6 @@ package me.NinetyNine.villagershop.commands;
 
 import me.NinetyNine.villagershop.VillagerShop;
 import me.NinetyNine.villagershop.ability.Ability;
-import me.NinetyNine.villagershop.ability.AbilityManager;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -64,16 +63,21 @@ public class AbilityAdminCommand implements CommandExecutor {
 
                     if (ability == null) return true;
 
-                    int cost = getCost(sender, args[2]);
+                    if (args.length == 3) {
+                        int cost = getCost(sender, args[2]);
 
-                    if (cost == 0)
+                        if (cost == 0)
+                            return true;
+
+                        plugin.getPConfig().getConfig().set(ability.getAbilityName() + ".price", cost);
+                        VillagerShop.getInstance().saveConfig();
+                        sender.sendMessage(ChatColor.GREEN + "Successfully set the price of " +
+                                ability.getAbilityName() + " to " + cost);
                         return true;
-
-                    plugin.getPConfig().getConfig().set(ability.getAbilityName() + ".price", cost);
-                    VillagerShop.getInstance().saveConfig();
-                    sender.sendMessage(ChatColor.GREEN + "Successfully set the price of " +
-                            ability.getAbilityName() + " to " + cost);
-                    return true;
+                    } else {
+                        sender.sendMessage(ChatColor.BOLD + "Usage: /aability price <ability> <price>");
+                        return true;
+                    }
                 }
 
                 if (args[0].equalsIgnoreCase("list")) {
@@ -83,8 +87,8 @@ public class AbilityAdminCommand implements CommandExecutor {
                     StringBuilder builder = new StringBuilder();
                     String[] abilities = null;
 
-                    if (AbilityManager.getInstance().hasAbilities(player)) {
-                        for (Ability a : AbilityManager.getInstance().getAbilities(player))
+                    if (this.plugin.getAManager().hasAbilities(player)) {
+                        for (Ability a : this.plugin.getAManager().getAbilities(player))
                             builder.append(a.getAbilityName());
 
                         abilities = builder.toString().split(",");
@@ -102,14 +106,19 @@ public class AbilityAdminCommand implements CommandExecutor {
 
                     if (player == null) return true;
 
-                    Ability ability = getAbility(sender, args[2]);
+                    if (args.length == 3) {
+                        Ability ability = getAbility(sender, args[2]);
 
-                    if (ability == null) return true;
+                        if (ability == null) return true;
 
-                    AbilityManager.getInstance().buy(ability, player);
-                    player.sendMessage(ChatColor.GREEN + "Successfully given "
-                            + ability.getAbilityName() + " to " + player.getName() + "!");
-                    return true;
+                        this.plugin.getAManager().buy(ability, player);
+                        player.sendMessage(ChatColor.GREEN + "Successfully given "
+                                + ability.getAbilityName() + " to " + player.getName() + "!");
+                        return true;
+                    } else {
+                        player.sendMessage(ChatColor.BOLD + "Usage: /aability give <player> <ability>");
+                        return true;
+                    }
                 }
 
                 if (args[0].equalsIgnoreCase("remove")) {
@@ -117,14 +126,19 @@ public class AbilityAdminCommand implements CommandExecutor {
 
                     if (player == null) return true;
 
-                    Ability ability = getAbility(sender, args[2]);
+                    if (args.length == 3) {
+                        Ability ability = getAbility(sender, args[2]);
 
-                    if (ability == null) return true;
+                        if (ability == null) return true;
 
-                    AbilityManager.getInstance().remove(ability, player);
-                    player.sendMessage(ChatColor.GREEN + "Successfully removed "
-                            + ability.getAbilityName() + " from " + player.getName() + "!");
-                    return true;
+                        this.plugin.getAManager().remove(ability, player);
+                        player.sendMessage(ChatColor.GREEN + "Successfully removed "
+                                + ability.getAbilityName() + " from " + player.getName() + "!");
+                        return true;
+                    } else {
+                        player.sendMessage(ChatColor.BOLD + "Usage: /aability remove <player> <ability>");
+                        return true;
+                    }
                 }
             }
         }

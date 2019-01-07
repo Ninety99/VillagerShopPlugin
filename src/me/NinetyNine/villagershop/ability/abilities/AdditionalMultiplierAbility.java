@@ -1,8 +1,6 @@
 package me.NinetyNine.villagershop.ability.abilities;
 
-import me.NinetyNine.villagershop.VillagerShop;
 import me.NinetyNine.villagershop.ability.Ability;
-import me.NinetyNine.villagershop.ability.AbilityManager;
 import me.clip.autosell.events.SignSellEvent;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.ChatColor;
@@ -12,10 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 public class AdditionalMultiplierAbility extends Ability {
-
-    public AdditionalMultiplierAbility(VillagerShop plugin) {
-        super(plugin);
-    }
 
     @Override
     public ItemStack getIcon() {
@@ -34,16 +28,12 @@ public class AdditionalMultiplierAbility extends Ability {
 
     @Override
     public int getCost() {
-        return this.getPlugin().getPConfig().getConfig().getInt(getAbilityName() + ".price");
+        return 10000;
     }
-
-    /*
-    TODO: Listen for selling
-     */
 
     @EventHandler
     public void onSignSell(SignSellEvent e) {
-        if (!AbilityManager.getInstance().hasAbility(this, e.getPlayer())) return;
+        if (!plugin.getAManager().hasAbility(this, e.getPlayer())) return;
 
         if (this.getChance() <= 0.10) {
             e.setTotalCost(e.getTotalCost() * 1.25);
@@ -53,7 +43,7 @@ public class AdditionalMultiplierAbility extends Ability {
     }
 
     private void addTotalCost(Player player, double cost) {
-        EconomyResponse r = this.getPlugin().getEconomy().depositPlayer(player, cost);
+        EconomyResponse r = plugin.getEconomy().depositPlayer(player, cost);
 
         if (!r.transactionSuccess()) {
             player.sendMessage(ChatColor.RED + "Transaction failed! Contact an administrator.");

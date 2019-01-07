@@ -1,8 +1,6 @@
 package me.NinetyNine.villagershop.ability.abilities;
 
-import me.NinetyNine.villagershop.VillagerShop;
 import me.NinetyNine.villagershop.ability.Ability;
-import me.NinetyNine.villagershop.ability.AbilityManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,13 +12,9 @@ import org.bukkit.potion.PotionEffectType;
 
 public class AttackerAbility extends Ability {
 
-    public AttackerAbility(VillagerShop plugin) {
-        super(plugin);
-    }
-
     @Override
     public ItemStack getIcon() {
-        ItemStack pot = new ItemStack(Material.GLASS_BOTTLE, 1);
+        ItemStack pot = new ItemStack(Material.POTION, 1);
         PotionMeta meta = (PotionMeta) pot.getItemMeta();
         meta.setMainEffect(PotionEffectType.INCREASE_DAMAGE);
         pot.setItemMeta(meta);
@@ -39,7 +33,7 @@ public class AttackerAbility extends Ability {
 
     @Override
     public int getCost() {
-        return this.getPlugin().getPConfig().getConfig().getInt(getAbilityName() + ".price");
+        return 5000;
     }
 
     @EventHandler
@@ -49,7 +43,7 @@ public class AttackerAbility extends Ability {
 
         Player attacker = (Player) e.getDamager();
 
-        if (!AbilityManager.getInstance().hasAbility(this, attacker)) return;
+        if (!plugin.getAManager().hasAbility(this, attacker)) return;
 
         Player player = (Player) e.getEntity();
 

@@ -1,8 +1,6 @@
 package me.NinetyNine.villagershop.ability.abilities;
 
-import me.NinetyNine.villagershop.VillagerShop;
 import me.NinetyNine.villagershop.ability.Ability;
-import me.NinetyNine.villagershop.ability.AbilityManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,10 +8,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class LegacyAbility extends Ability {
-
-    public LegacyAbility(VillagerShop plugin) {
-        super(plugin);
-    }
 
     @Override
     public ItemStack getIcon() {
@@ -32,7 +26,7 @@ public class LegacyAbility extends Ability {
 
     @Override
     public int getCost() {
-        return this.getPlugin().getPConfig().getConfig().getInt(getAbilityName() + ".price");
+        return 5000;
     }
 
     @EventHandler
@@ -40,13 +34,14 @@ public class LegacyAbility extends Ability {
         if (e.isCancelled()) return;
         Player player = e.getPlayer();
 
-        if (!AbilityManager.getInstance().hasAbility(this, player)) return;
+        if (!plugin.getAManager().hasAbility(this, player)) return;
 
         if (e.getBlock().getType() != Material.BEACON) return;
 
         if (this.getChance() <= 0.05) {
-            this.getPlugin().getServer().dispatchCommand(this.getPlugin().getServer().getConsoleSender(), "give "
+            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "give "
                     + player.getName() + " 1");
+            return;
         }
     }
 }

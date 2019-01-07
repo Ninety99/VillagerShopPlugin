@@ -2,6 +2,7 @@ package me.NinetyNine.villagershop.ability;
 
 import lombok.Getter;
 import me.NinetyNine.villagershop.PPlayer;
+import me.NinetyNine.villagershop.ability.abilities.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -9,10 +10,11 @@ import java.util.*;
 
 public class AbilityManager {
 
-    @Getter
-    private static final AbilityManager instance = new AbilityManager();
-
     private final Map<String, List<Ability>> playerToAbility = new HashMap<>();
+
+    @Getter
+    private final List<Ability> abilities = Arrays.asList(new DoubleOreAbility(), new TankAbility(),
+            new AttackerAbility(), new LegacyAbility(), new AdditionalMultiplierAbility());
 
     public void buy(Ability ability, Player player) {
         if (player == null) return;

@@ -19,11 +19,10 @@ public class Config {
     public void init() {
         getConfig().options().copyDefaults(true);
 
-        for (Ability a : Ability.getAbilities()) {
+        for (Ability a : this.plugin.getAManager().getAbilities()) {
             getConfig().addDefault(a.getAbilityName() + ".price", 0);
             Bukkit.getLogger().info("Adding defaults " + a.getAbilityName());
         }
-
-        VillagerShop.getInstance().saveConfig();
+        plugin.saveConfig();
     }
 }

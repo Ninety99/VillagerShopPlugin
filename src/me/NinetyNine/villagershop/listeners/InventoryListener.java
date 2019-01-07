@@ -2,7 +2,6 @@ package me.NinetyNine.villagershop.listeners;
 
 import me.NinetyNine.villagershop.VillagerShop;
 import me.NinetyNine.villagershop.ability.Ability;
-import me.NinetyNine.villagershop.ability.AbilityManager;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -86,7 +85,7 @@ public class InventoryListener implements Listener {
         EconomyResponse r = plugin.getEconomy().withdrawPlayer(player, ability.getCost());
 
         if (r.transactionSuccess()) {
-            AbilityManager.getInstance().buy(ability, player);
+            this.plugin.getAManager().buy(ability, player);
             Bukkit.getLogger().info(player.getName() + " has bought " + ability.getAbilityName());
             player.sendMessage(ChatColor.GREEN + "Successfully bought " + ability.getAbilityName() + "!");
         } else

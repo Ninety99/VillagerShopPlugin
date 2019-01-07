@@ -1,8 +1,6 @@
 package me.NinetyNine.villagershop.ability.abilities;
 
-import me.NinetyNine.villagershop.VillagerShop;
 import me.NinetyNine.villagershop.ability.Ability;
-import me.NinetyNine.villagershop.ability.AbilityManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -10,10 +8,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class DoubleOreAbility extends Ability {
-
-    public DoubleOreAbility(VillagerShop plugin) {
-        super(plugin);
-    }
 
     @Override
     public String getAbilityName() {
@@ -27,7 +21,7 @@ public class DoubleOreAbility extends Ability {
 
     @Override
     public int getCost() {
-        return this.getPlugin().getPConfig().getConfig().getInt(getAbilityName() + ".price");
+        return 5000;
     }
 
     @Override
@@ -37,7 +31,7 @@ public class DoubleOreAbility extends Ability {
 
     @EventHandler
     public void onPlayerBreakOre(BlockBreakEvent e) {
-        if (!AbilityManager.getInstance().hasAbility(this, e.getPlayer()))
+        if (!plugin.getAManager().hasAbility(this, e.getPlayer()))
             return;
 
         if (e.isCancelled()) return;
