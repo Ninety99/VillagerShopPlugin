@@ -3,8 +3,6 @@ package me.NinetyNine.villagershop.ability.abilities;
 import me.NinetyNine.villagershop.VillagerShop;
 import me.NinetyNine.villagershop.ability.Ability;
 import me.NinetyNine.villagershop.ability.AbilityManager;
-import me.Tibo442.MineShop.SQLAPI;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -47,13 +45,8 @@ public class LegacyAbility extends Ability {
         if (e.getBlock().getType() != Material.BEACON) return;
 
         if (this.getChance() <= 0.05) {
-            /*
-            TODO: Add +1 legacy coin
-             */
-
-
-            player.sendMessage(ChatColor.GREEN + "You have gained a legacy coin! " + ChatColor.AQUA +
-                    "(" + getAbilityName() + ")");
+            this.getPlugin().getServer().dispatchCommand(this.getPlugin().getServer().getConsoleSender(), "give "
+                    + player.getName() + " 1");
         }
     }
 }

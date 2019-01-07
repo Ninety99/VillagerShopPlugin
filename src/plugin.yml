@@ -1,7 +1,7 @@
 name: VillagerShop
 main: me.NinetyNine.villagershop.VillagerShop
 version: 1.0
-depend: [Vault, MineShop, AutoSell]
+depend: [Vault, AutoSell]
 description: An ability merchant plugin
 commands:
   ability:
