@@ -7,6 +7,9 @@ import me.NinetyNine.villagershop.commands.AbilityCommand;
 import me.NinetyNine.villagershop.listeners.InventoryListener;
 import me.NinetyNine.villagershop.listeners.PlayerListener;
 import me.NinetyNine.villagershop.listeners.VillagerListener;
+import me.Tibo442.MineShop.Main;
+import me.Tibo442.MineShop.SQL;
+import me.Tibo442.MineShop.SQLAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,6 +21,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.lang.reflect.Field;
 
 public class VillagerShop extends JavaPlugin {
 
@@ -39,6 +44,9 @@ public class VillagerShop extends JavaPlugin {
     @Getter
     private Util util;
 
+    @Getter
+    private SQLAPI sqlAPI;
+
     @Override
     public void onEnable() {
         this.setupEconomy();
@@ -51,6 +59,7 @@ public class VillagerShop extends JavaPlugin {
         this.manager = new VillagerManager(this);
         this.pConfig = new Config(this);
         this.util = new Util();
+        this.sqlAPI = this.sqlAPI();
         this.registerListeners();
         this.registerCommands();
         this.setupShop();
@@ -116,5 +125,25 @@ public class VillagerShop extends JavaPlugin {
         }
 
         economy = rsp.getProvider();
+    }
+
+    private SQLAPI sqlAPI() {
+        if (Bukkit.getServer().getPluginManager().getPlugin("MineShop") == null)
+            return null;
+
+        try {
+            Field fieldSQL = Main.class.getDeclaredField("sql");
+            fieldSQL.setAccessible(true);
+
+            SQL sql = (SQL) fieldSQL.get(Main.class);
+
+            Field sqlAPI = Main.class.getDeclaredField("api");
+            sqlAPI.setAccessible(true);
+
+            return (SQLAPI) sqlAPI.get(sql);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            this.getLogger().warning("API field not found.");
+            return null;
+        }
     }
 }

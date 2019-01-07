@@ -10,5 +10,7 @@
     <orderEntry type="library" name="lombok" level="project" />
     <orderEntry type="library" name="spigot" level="project" />
     <orderEntry type="library" name="Vault" level="project" />
+    <orderEntry type="library" name="AutoSell-1.8.0" level="project" />
+    <orderEntry type="library" name="MineShop" level="project" />
   </component>
 </module>

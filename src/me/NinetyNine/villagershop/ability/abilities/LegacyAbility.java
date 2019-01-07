@@ -3,6 +3,7 @@ package me.NinetyNine.villagershop.ability.abilities;
 import me.NinetyNine.villagershop.VillagerShop;
 import me.NinetyNine.villagershop.ability.Ability;
 import me.NinetyNine.villagershop.ability.AbilityManager;
+import me.Tibo442.MineShop.SQLAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -49,6 +50,8 @@ public class LegacyAbility extends Ability {
             /*
             TODO: Add +1 legacy coin
              */
+
+
             player.sendMessage(ChatColor.GREEN + "You have gained a legacy coin! " + ChatColor.AQUA +
                     "(" + getAbilityName() + ")");
         }
